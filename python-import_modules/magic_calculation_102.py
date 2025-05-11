@@ -1,4 +1,3 @@
-# magic_calculation_102.py
 def add(a, b):
     return a + b
 

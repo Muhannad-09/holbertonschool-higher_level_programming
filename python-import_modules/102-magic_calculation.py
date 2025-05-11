@@ -1,5 +1,3 @@
-#!/usr/bin/python3
-
 def magic_calculation(a, b):
     add = __import__("magic_calculation_102").add
     sub = __import__("magic_calculation_102").sub
@@ -11,6 +9,7 @@ def magic_calculation(a, b):
         return c
     else:
         return sub(a, b)
+
 
 if __name__ == "__main__":
     print(magic_calculation(2, 1))
