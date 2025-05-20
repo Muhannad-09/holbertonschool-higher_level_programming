@@ -1,16 +1,16 @@
 #!/usr/bin/python3
-"""This module defines a Square class with position and printing features."""
+"""This module defines a Square class with size and position."""
 
 
 class Square:
-    """Represents a square with size, position, and printable output."""
+    """Represents a square with a given size and position."""
 
     def __init__(self, size=0, position=(0, 0)):
-        """Initialize the square with a given size and position.
+        """Initialize a new square.
 
         Args:
             size (int): The size of the square (default is 0).
-            position (tuple): The (x, y) coordinates for positioning the square.
+            position (tuple): The position (x, y) to print the square from.
         """
         self.size = size
         self.position = position
@@ -25,7 +25,7 @@ class Square:
         """Set the size of the square with validation.
 
         Args:
-            value (int): The new size of the square.
+            value (int): New size value.
 
         Raises:
             TypeError: If value is not an integer.
@@ -47,7 +47,7 @@ class Square:
         """Set the position of the square with validation.
 
         Args:
-            value (tuple): A tuple representing (x, y) coordinates.
+            value (tuple): New position value (x, y).
 
         Raises:
             TypeError: If value is not a tuple of 2 positive integers.
@@ -58,19 +58,17 @@ class Square:
         self.__position = value
 
     def area(self):
-        """Return the current area of the square."""
+        """Calculate and return the area of the square."""
         return self.__size ** 2
 
     def my_print(self):
-        """Print the square using '#' characters, adjusting for position."""
+        """Print the square using '#' with the correct position."""
         if self.__size == 0:
             print()
             return
 
-        # Print vertical spaces (y-axis offset)
         for _ in range(self.__position[1]):
             print()
 
-        # Print the square with horizontal spaces (x-axis offset)
         for _ in range(self.__size):
             print(" " * self.__position[0] + "#" * self.__size)
