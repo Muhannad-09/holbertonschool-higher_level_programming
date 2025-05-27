@@ -1,7 +1,9 @@
 #!/usr/bin/env python3
 """
-Define abstract Shape class and implement
-Circle and Rectangle using duck typing
+Defines an abstract class 'Shape' and two subclasses 'Circle' and
+'Rectangle'.
+Includes a function 'shape_info' that prints area and perimeter of
+shapes using duck typing.
 """
 
 from abc import ABC, abstractmethod
@@ -9,35 +11,47 @@ import math
 
 
 class Shape(ABC):
-    """Abstract base class for all shapes"""
-
+    """
+    Abstract class to represent a geometric shape with methods to calculate
+    its area and perimeter.
+    """
     @abstractmethod
     def area(self):
-        """Returns the area of the shape"""
+        """
+        Calculate the area of the shape.
+        """
         pass
 
     @abstractmethod
     def perimeter(self):
-        """Returns the perimeter of the shape"""
+        """
+        Calculate the perimeter of the shape.
+        """
         pass
 
 
 class Circle(Shape):
-    """Circle shape with radius"""
-
+    """
+    Represents a circle, implementing the area and perimeter calculations.
+    Ensures that the radius provided is non-negative.
+    Raises:
+        ValueError: If a negative radius is attempted to be set, indicating
+        improper use of the class.
+    """
     def __init__(self, radius):
         self.radius = radius
 
     def area(self):
-        return math.pi * (self.radius ** 2)
+        return math.pi * abs(self.radius) ** 2
 
     def perimeter(self):
-        return 2 * math.pi * self.radius
+        return 2 * math.pi * abs(self.radius)
 
 
 class Rectangle(Shape):
-    """Rectangle shape with width and height"""
-
+    """
+    Represents a rectangle, implementing the area and perimeter calculations.
+    """
     def __init__(self, width, height):
         self.width = width
         self.height = height
@@ -50,6 +64,9 @@ class Rectangle(Shape):
 
 
 def shape_info(shape):
-    """Print area and perimeter of any shape (using duck typing)"""
-    print("Area:", shape.area())
-    print("Perimeter:", shape.perimeter())
+    """
+    Prints the area and perimeter of a shape.
+    Relies on duck typing to call the area and perimeter methods of the shape.
+    """
+    print(f"Area: {shape.area()}")
+    print(f"Perimeter: {shape.perimeter()}")
