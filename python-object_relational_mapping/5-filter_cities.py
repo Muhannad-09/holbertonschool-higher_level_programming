@@ -1,37 +1,32 @@
 #!/usr/bin/python3
-"""Lists all cities of a given state from the database hbtn_0e_4_usa."""
-
 import MySQLdb
 import sys
 
 if __name__ == "__main__":
-    # Extract arguments
-    username, password, db_name, state_name = sys.argv[1:5]
+    if len(sys.argv) != 5:
+        print("Usage: ./5-filter_cities.py <mysql_user> <mysql_pass> <db_name> <state_name>")
+        sys.exit(1)
 
-    # Connect to the database
-    db = MySQLdb.connect(
-        host="localhost",
-        port=3306,
-        user=username,
-        passwd=password,
-        db=db_name
-    )
+    user = sys.argv[1]
+    password = sys.argv[2]
+    db_name = sys.argv[3]
+    state_name = sys.argv[4]
 
-    cur = db.cursor()
+    db = MySQLdb.connect(host="localhost", user=user, passwd=password, db=db_name, port=3306)
+    cursor = db.cursor()
 
-    # Secure query with parameterization (SQL injection safe)
     query = """
-        SELECT cities.name FROM cities
-        JOIN states ON cities.state_id = states.id
-        WHERE states.name = %s
-        ORDER BY cities.id ASC
+    SELECT cities.name FROM cities
+    JOIN states ON cities.state_id = states.id
+    WHERE states.name = %s
+    ORDER BY cities.id ASC
     """
 
-    cur.execute(query, (state_name,))
-    rows = cur.fetchall()
+    cursor.execute(query, (state_name,))
+    rows = cursor.fetchall()
 
-    # Join city names into comma-separated string
-    print(", ".join([row[0] for row in rows]))
+    if rows:
+        print(", ".join(city[0] for city in rows))
 
-    cur.close()
+    cursor.close()
     db.close()
