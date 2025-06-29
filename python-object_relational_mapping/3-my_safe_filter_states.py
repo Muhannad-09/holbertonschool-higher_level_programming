@@ -1,23 +1,31 @@
 #!/usr/bin/python3
 """
-Displays all states that match the provided name (safe from SQL injection).
+do you remember the previous task? Did you test "Arizona'; TRUNCATE
+TABLE states ; SELECT * FROM states WHERE name = '" as an input?
 """
-
-import sys
 import MySQLdb
-
+import sys
 
 if __name__ == "__main__":
+    username = sys.argv[1]
+    password = sys.argv[2]
+    database = sys.argv[3]
+    state_name = sys.argv[4]
+
     db = MySQLdb.connect(
         host="localhost",
-        user=sys.argv[1],
-        passwd=sys.argv[2],
-        db=sys.argv[3]
+        port=3306,
+        user=username,
+        passwd=password,
+        db=database
     )
-    cursor = db.cursor()
+    cur = db.cursor()
     query = "SELECT * FROM states WHERE name = %s ORDER BY id ASC"
-    cursor.execute(query, (sys.argv[4],))
-    for row in cursor.fetchall():
+    cur.execute(query, (state_name,))
+    rows = cur.fetchall()
+
+    for row in rows:
         print(row)
-    cursor.close()
+
+    cur.close()
     db.close()
