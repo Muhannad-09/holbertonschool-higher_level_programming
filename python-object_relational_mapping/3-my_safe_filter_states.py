@@ -1,23 +1,31 @@
 #!/usr/bin/python3
-"""
-Displays all states that match the provided name (safe from SQL injection).
-"""
+"""Safe script to list states matching a given name (preventing SQL injection)."""
 
-import sys
 import MySQLdb
-
+import sys
 
 if __name__ == "__main__":
+    # Get CLI arguments
+    username, password, db_name, state_name = sys.argv[1:5]
+
+    # Connect to database
     db = MySQLdb.connect(
         host="localhost",
-        user=sys.argv[1],
-        passwd=sys.argv[2],
-        db=sys.argv[3]
+        port=3306,
+        user=username,
+        passwd=password,
+        db=db_name
     )
-    cursor = db.cursor()
+
+    cur = db.cursor()
+
+    # Use parameterized query to prevent SQL injection
     query = "SELECT * FROM states WHERE name = %s ORDER BY id ASC"
-    cursor.execute(query, (sys.argv[4],))
-    for row in cursor.fetchall():
+    cur.execute(query, (state_name,))
+
+    results = cur.fetchall()
+    for row in results:
         print(row)
-    cursor.close()
+
+    cur.close()
     db.close()
