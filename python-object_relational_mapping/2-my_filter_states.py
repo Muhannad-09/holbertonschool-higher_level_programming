@@ -1,29 +1,18 @@
 #!/usr/bin/python3
-"""
-Filters states by user-supplied name (case-sensitive exact match).
-"""
-
-import sys
+"""Script that takes in an argument and displays all values in the states
+table of hbtn_0e_0_usa where name matches the argument"""
 import MySQLdb
-
+from sys import argv
 
 if __name__ == "__main__":
-    db = MySQLdb.connect(
-        host="localhost",
-        user=sys.argv[1],
-        passwd=sys.argv[2],
-        db=sys.argv[3]
-    )
-    cursor = db.cursor()
-    # Build SQL query using format with the user input
-    query = (
-        "SELECT * FROM states "
-        "WHERE name = '{}' "
-        "ORDER BY id ASC"
-    ).format(sys.argv[4])
-
-    cursor.execute(query)
-    for row in cursor.fetchall():
-        print(row)
-    cursor.close()
+    db = MySQLdb.connect(host="localhost", port=3306, user=argv[1],
+                         passwd=argv[2], db=argv[3], charset="utf8")
+    cur = db.cursor()
+    cur.execute("SELECT * FROM states WHERE name LIKE '{:s}' ORDER BY \
+    id ASC".format(argv[4]))
+    rows = cur.fetchall()
+    for row in rows:
+        if row[1] == argv[4]:
+            print(row)
+    cur.close()
     db.close()
