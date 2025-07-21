@@ -1,1 +1,1 @@
-True
+s1 is s2
